@@ -3,7 +3,6 @@ from typing import Union
 
 class InfoMessage:
     """Информационное сообщение о тренировке."""
-
     def __init__(self,
                  training_type: str,
                  duration: float,
@@ -83,7 +82,6 @@ class Running(Training):
 
 class SportsWalking(Training):
     """Тренировка: спортивная ходьба."""
-
     def __init__(self,
                  action: int,
                  duration: float,
