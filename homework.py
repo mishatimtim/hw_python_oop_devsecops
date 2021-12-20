@@ -1,3 +1,6 @@
+from typing import Union
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
 
@@ -8,20 +11,24 @@ class InfoMessage:
                  speed: float,
                  calories: float
                  ) -> None:
-        self.training_type = training_type,
+        self.training_type = training_type
         self.duration = duration
         self.distance = distance
         self.speed = speed
         self.calories = calories
 
-    def get_message(self):
-        return (f'Тип тренировки: {self.training_type}; Длительность: {round(self.duration,3)} ч.; Дистанция: {round(self.distance,3)} км;')
+    def get_message(self) -> None:
+        return (f'Тип тренировки: {self.training_type}; '
+                f'Длительность: {self.duration:.3f} ч.; '
+                f'Дистанция: {self.distance:.3f} км; '
+                f'Ср. скорость: {self.speed:.3f} км/ч; '
+                f'Потрачено ккал: {self.calories:.3f}.')
 
 
 class Training:
     """Базовый класс тренировки."""
-    M_IN_KM = 1000
-    LEN_STEP = 0.65
+    M_IN_KM: float = 1000
+    LEN_STEP: float = 0.65
 
     def __init__(self,
                  action: int,
@@ -49,11 +56,12 @@ class Training:
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
-        info_message = InfoMessage(self,
+        info_message = InfoMessage(training_type=self.__class__.__name__,
                                    duration=self.duration,
                                    distance=self.get_distance(),
                                    speed=self.get_mean_speed(),
-                                   calories=self.get_spent_calories())
+                                   calories=self.get_spent_calories()
+                                   )
         return info_message
 
 
@@ -62,12 +70,13 @@ class Running(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        coeff_cal_1 = 18
-        coeff_cal_2 = 20
+        coeff_cal_1: float = 18
+        coeff_cal_2: float = 20
         mean_speed: float = self.get_mean_speed()
-        spent_calories: float = (((coeff_cal_1 * mean_speed - coeff_cal_2)
-                                 * self.weight)
-                                 / (self.M_IN_KM * self.duration))
+        duration_in_min: float = self.duration * 60
+        spent_calories: float = ((coeff_cal_1 * mean_speed - coeff_cal_2)
+                                 * self.weight
+                                 / self.M_IN_KM * duration_in_min)
         return spent_calories
 
 
@@ -88,19 +97,20 @@ class SportsWalking(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        coeff_cal_1 = 0.035
-        coeff_cal_2 = 0.029
-        mean_speed = self.get_mean_speed()
+        coeff_cal_1: float = 0.035
+        coeff_cal_2: float = 0.029
+        mean_speed: float = self.get_mean_speed()
+        duration_in_min: float = self.duration * 60
         spent_calories: float = ((coeff_cal_1 * self.weight + (mean_speed
                                  ** 2 // self.height)
                                  * coeff_cal_2 * self.weight)
-                                 * self.duration)
+                                 * duration_in_min)
         return spent_calories
 
 
 class Swimming(Training):
     """Тренировка: плавание."""
-    LEN_STEP = 1.38
+    LEN_STEP: float = 1.38
 
     def __init__(self,
                  action: int,
@@ -124,20 +134,22 @@ class Swimming(Training):
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        coeff_cal_1 = 1.1
-        coeff_cal_2 = 2
-        spent_calories = ((self.get_mean_speed()
-                          + coeff_cal_1) * coeff_cal_2 * self.weight)
+        coeff_cal_1: float = 1.1
+        coeff_cal_2: float = 2
+        spent_calories: float = ((self.get_mean_speed()
+                                 + coeff_cal_1) * coeff_cal_2 * self.weight)
         return spent_calories
 
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    workout_type_dict = {'RUN': Running,
-                         'WLK': SportsWalking,
-                         'SWM': Swimming
-                         }
-    class_object = workout_type_dict[workout_type](*data)
+    workout_type_dict: dict = {'RUN': Running,
+                               'WLK': SportsWalking,
+                               'SWM': Swimming
+                               }
+    class_object: Union[Running,
+                        SportsWalking,
+                        Swimming] = workout_type_dict[workout_type](*data)
     return class_object
 
 
@@ -148,7 +160,7 @@ def main(training: Training) -> None:
 
 
 if __name__ == '__main__':
-    packages = [
+    packages: list = [
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
         ('WLK', [9000, 1, 75, 180]),
