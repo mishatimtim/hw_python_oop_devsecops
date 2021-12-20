@@ -73,10 +73,11 @@ class Running(Training):
         coeff_cal_1: float = 18
         coeff_cal_2: float = 20
         mean_speed: float = self.get_mean_speed()
-        duration_in_min: float = self.duration * 60
+        duration_in_min: float = self.duration * 60  # Перевод часов в минуты
         spent_calories: float = ((coeff_cal_1 * mean_speed - coeff_cal_2)
                                  * self.weight
-                                 / self.M_IN_KM * duration_in_min)
+                                 / self.M_IN_KM
+                                 * duration_in_min)
         return spent_calories
 
 
@@ -100,9 +101,9 @@ class SportsWalking(Training):
         coeff_cal_1: float = 0.035
         coeff_cal_2: float = 0.029
         mean_speed: float = self.get_mean_speed()
-        duration_in_min: float = self.duration * 60
-        spent_calories: float = ((coeff_cal_1 * self.weight + (mean_speed
-                                 ** 2 // self.height)
+        duration_in_min: float = self.duration * 60  # Перевод часов в минуты
+        spent_calories: float = ((coeff_cal_1 * self.weight
+                                 + (mean_speed ** 2 // self.height)
                                  * coeff_cal_2 * self.weight)
                                  * duration_in_min)
         return spent_calories
@@ -160,6 +161,7 @@ def main(training: Training) -> None:
 
 
 if __name__ == '__main__':
+    """Точка входа в программу."""
     packages: list = [
         ('SWM', [720, 1, 80, 25, 40]),
         ('RUN', [15000, 1, 75]),
