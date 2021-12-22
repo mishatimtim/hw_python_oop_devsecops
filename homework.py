@@ -153,7 +153,7 @@ def read_package(workout_type: str, data: list) -> Training:
                                                     'WLK': SportsWalking,
                                                     'SWM': Swimming,
                                                     }
-    if workout_type not in workout_type_dict.keys():
+    if workout_type not in list(workout_type_dict):
         raise ValueError
     else:
         class_object: Training = workout_type_dict[workout_type](*data)
