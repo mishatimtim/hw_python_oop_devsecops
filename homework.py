@@ -5,6 +5,12 @@ from dataclasses import dataclass, asdict
 @dataclass
 class InfoMessage:
     """Информационное сообщение о тренировке."""
+    INFO_MESSAGE = ('Тип тренировки: {training_type}; '
+                    'Длительность: {duration:.3f} ч.; '
+                    'Дистанция: {distance:.3f} км; '
+                    'Ср. скорость: {speed:.3f} км/ч; '
+                    'Потрачено ккал: {calories:.3f}.'
+                    )
     training_type: str
     duration: float
     distance: float
@@ -13,13 +19,7 @@ class InfoMessage:
 
     def get_message(self) -> None:
         info_about_training = asdict(self)
-        return ('Тип тренировки: {training_type}; '
-                'Длительность: {duration:.3f} ч.; '
-                'Дистанция: {distance:.3f} км; '
-                'Ср. скорость: {speed:.3f} км/ч; '
-                'Потрачено ккал: {calories:.3f}.'
-                .format(**info_about_training)
-                )
+        return (self.INFO_MESSAGE.format(**info_about_training))
 
 
 class Training:
@@ -153,7 +153,7 @@ def read_package(workout_type: str, data: list) -> Training:
                                                     'WLK': SportsWalking,
                                                     'SWM': Swimming,
                                                     }
-    if workout_type not in list(workout_type_dict):
+    if workout_type not in workout_type_dict:
         raise ValueError
     else:
         class_object: Training = workout_type_dict[workout_type](*data)
