@@ -3,6 +3,7 @@ name: CI-СD-Pipeline-to-AWS
 env:
   EB_PACKAGE_S3_BUCKET_NAME: "devsecops-project-2022"
   EB_APPLICATION_NAME      : "MyFlask"
+  EB_APPLICATION_ID        : "arn:aws:elasticbeanstalk:ap-northeast-1:214980806952:application/MyFlask"
   EB_ENVIRONMENT_NAME      : "Myflask-env"
   DEPLOY_PACKAGE_NAME      : "flask_app_${{ github.sha }}.zip"
   AWS_REGION_NAME          : "eu-west-2"
@@ -52,7 +53,7 @@ jobs:
       - name: Create new ElasticBeanstalk Application
         run: |
          aws elasticbeanstalk create-application-version \
-         --application-name ${{ env.EB_APPLICATION_NAME }} \
+         --application-id ${{ env.EB_APPLICATION_ID }} \
          --source-bundle S3Bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PACKAGE_NAME }}" \
          --version-label "Ver-${{ github.sha }}" \
          --description "CommitSHA ${{ github.sha }}"
