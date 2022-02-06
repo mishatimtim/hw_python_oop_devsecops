@@ -2,8 +2,8 @@
 name: CI-СD-Pipeline-to-AWS
 env:
   EB_PACKAGE_S3_BUCKET_NAME: "devsecops-project-2022"
-  EB_APPLICATION_NAME      : "MyFlask2"
-  EB_ENVIRONMENT_NAME      : "Myflask2-env"
+  EB_APPLICATION_NAME      : "MyFlask"
+  EB_ENVIRONMENT_NAME      : "Myflask-env"
   DEPLOY_PACKAGE_NAME      : "flask_app_${{ github.sha }}.zip"
   AWS_REGION_NAME          : "eu-west-2"
   
