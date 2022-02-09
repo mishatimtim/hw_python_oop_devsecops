@@ -17,7 +17,7 @@ jobs:
   ci-pipeline:
     runs-on: ubuntu-latest
     
-#    steps:
+    steps:
 #      - name: sast-scan
 #        uses: AppThreat/sast-scan-action@1.0.2  
 #        with
