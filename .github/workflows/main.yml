@@ -17,11 +17,11 @@ jobs:
   ci-pipeline:
     runs-on: ubuntu-latest
     
-    steps:
-      - name: sast-scan
-        uses: AppThreat/sast-scan-action@1.0.2  
-        with:
-          type: "python"
+#    steps:
+#      - name: sast-scan
+#        uses: AppThreat/sast-scan-action@1.0.2  
+#        with
+#          type: "python"
 
         
 
