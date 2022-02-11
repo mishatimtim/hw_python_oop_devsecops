@@ -2,9 +2,9 @@
 name: CI-СD-Pipeline-to-AWS
 env:
   EB_PACKAGE_S3_BUCKET_NAME: "devsecops-project-2022"
-  EB_APPLICATION_NAME      : "MyFlask2"
+  EB_APPLICATION_NAME      : "MyFlask"
   EB_APPLICATION_ID        : "arn:aws:elasticbeanstalk:ap-northeast-1:214980806952:application/MyFlask"
-  EB_ENVIRONMENT_NAME      : "Myflask-env2"
+  EB_ENVIRONMENT_NAME      : "Myflask-env"
   DEPLOY_PACKAGE_NAME      : "flask_app_${{ github.sha }}.zip"
   AWS_REGION_NAME          : "eu-west-2"
      
@@ -58,13 +58,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.MY_AWS_SECRET_KEY}}
           aws-region           : ${{ env.AWS_REGION_NAME}}
     
-      - name: Create new ElasticBeanstalk Application
-        run: |
-         aws elasticbeanstalk create-application-version \
-         --application-name ${{ env.EB_APPLICATION_NAME }} \
-         --source-bundle S3Bucket="${{ env.EB_PACKAGE_S3_BUCKET_NAME }}",S3Key="${{ env.DEPLOY_PACKAGE_NAME }}" \
-         --version-label "Ver-${{ github.sha }}" \
-         --description "CommitSHA ${{ github.sha }}"
+      - name: Beanstalk Deploy for app
+        uses: einaregilsson/beanstalk-deploy@v10
+        with:
+         aws_access_key: ${{ secrets.MY_AWS_ACCESS_KEY}}
+         aws_secret_key: ${{ secrets.MY_AWS_SECRET_KEY}}
+         application_name: ${{ env.EB_APPLICATION_NAME }}
+         environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
+         region: ${{ env.AWS_REGION_NAME}}
+         version_label: "react-demo-new-${{ steps.format-time.outputs.replaced }}"
+         deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
           
       - name: Deploy new ElasticBeanstalk Application
         run: aws elasticbeanstalk update-environment --environment-name ${{ env.EB_ENVIRONMENT_NAME }} --version-label "Ver-${{ github.sha }}"
