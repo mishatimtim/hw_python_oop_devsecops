@@ -31,7 +31,7 @@ jobs:
 
       - name: Create ZIP deployment
 #        run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
-        run: zip -r deploy.zip * -x "**node_modules**"        
+        run: zip -r deploy.zip ./ -x *.git*       
       - name: Configure my AWS Credentionals
         uses: aws-actions/configure-aws-credentials@v1 
         with: 
