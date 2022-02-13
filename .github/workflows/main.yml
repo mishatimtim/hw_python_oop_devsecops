@@ -67,7 +67,7 @@ jobs:
          environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
          version_label: 12345
          region: eu-west-2
-         deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
+        
     
 #      - name: Create new ElasticBeanstalk Application
 #        run: |
