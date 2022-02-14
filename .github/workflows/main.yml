@@ -66,7 +66,7 @@ jobs:
           aws_secret_key: ${{ secrets.MY_AWS_SECRET_KEY}}
           application_name: ${{ env.EB_APPLICATION_NAME }}
           environment_name: ${{ env.EB_ENVIRONMENT_NAME }}
-#          version_label: name-of-your-project-${{ steps.buildnumber.outputs.build_number }}
+          version_label: ${{ env.EB_APPLICATION_NAME }}-${{ steps.buildnumber.outputs.build_number }}
           region: eu-west-1
           deployment_package: ${{ env.DEPLOY_PACKAGE_NAME }}
        
